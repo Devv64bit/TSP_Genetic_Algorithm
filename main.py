@@ -1,8 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# target DNA sequence
-target_seq = "ACGTTCGATGCACTAGCTGACGTAGTCGATCGATCGATCGATCGATCGATCGATCGATCGATC"
+
+# read target sequence from file
+with open('dataset\sequences.txt', 'r') as f:
+    target_seq = f.read().strip()
+
 
 # generate random DNA sequences
 np.random.seed(0)
@@ -17,10 +20,12 @@ for i in range(num_sequences):
 
 # genetic algorithm parameters
 num_generations = 200
-population_size = 100
+population_size = 130
 mutation_rate = 0.02
 
 # fitness function
+
+
 def fitness(sequence):
     similarity = 0
     for i in range(sequence_length):
@@ -29,6 +34,8 @@ def fitness(sequence):
     return similarity / sequence_length
 
 # crossover function
+
+
 def crossover(parent1, parent2):
     # select a random crossover point
     crossover_point = np.random.randint(sequence_length)
@@ -37,6 +44,8 @@ def crossover(parent1, parent2):
     return child
 
 # mutation function
+
+
 def mutation(sequence):
     if np.random.rand() < mutation_rate:
         i = np.random.randint(sequence_length)
@@ -45,6 +54,7 @@ def mutation(sequence):
         sequence = sequence[:i] + \
             np.random.choice(nucleotides) + sequence[i+1:]
     return sequence
+
 
 # initialize population
 population = []
@@ -73,7 +83,8 @@ for generation in range(num_generations):
     population = new_population
     # plot best sequence
     best_sequence = population[np.argmax(fitness_values[generation])]
-    best_similarity = fitness_values[generation, np.argmax(fitness_values[generation])]
+    best_similarity = fitness_values[generation,
+                                     np.argmax(fitness_values[generation])]
     print("Generation {}: Best Sequence = {}, Similarity = {:.4f}".format(
         generation+1, best_sequence, best_similarity))
 
@@ -84,7 +95,7 @@ print("Final Best Sequence = {}, Similarity = {:.4f}".format(
     best_sequence, best_similarity))
 
 # plot heat map
-plt.imshow(fitness_values, cmap='hot', interpolation='nearest')
+plt.imshow(fitness_values, cmap='inferno', interpolation='nearest')
 plt.xlabel('Sequence')
 plt.ylabel('Generation')
 plt.title('Fitness Heat Map')
