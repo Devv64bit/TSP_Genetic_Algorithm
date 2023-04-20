@@ -1,11 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 # read target sequence from file
 with open('dataset\sequences.txt', 'r') as f:
     target_seq = f.read().strip()
-
 
 # generate random DNA sequences
 np.random.seed(0)
@@ -20,13 +18,14 @@ for i in range(num_sequences):
 
 # genetic algorithm parameters
 num_generations = 200
-population_size = 130
+population_size = 140
 mutation_rate = 0.02
 
 # fitness function
 
 
 def fitness(sequence):
+    # calculate the similarity between the input sequence and the target sequence
     similarity = 0
     for i in range(sequence_length):
         if sequence[i] == target_seq[i]:
@@ -39,7 +38,7 @@ def fitness(sequence):
 def crossover(parent1, parent2):
     # select a random crossover point
     crossover_point = np.random.randint(sequence_length)
-    # combine the two parents' sequences
+    # combine the two parents' sequences at the crossover point to create a child sequence
     child = parent1[:crossover_point] + parent2[crossover_point:]
     return child
 
@@ -47,6 +46,7 @@ def crossover(parent1, parent2):
 
 
 def mutation(sequence):
+    # randomly mutate a nucleotide in the sequence with probability mutation_rate
     if np.random.rand() < mutation_rate:
         i = np.random.randint(sequence_length)
         nucleotides = ['A', 'C', 'G', 'T']
